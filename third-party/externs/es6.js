@@ -51,9 +51,6 @@ Generator.prototype.return = function(value) {};
 Generator.prototype.throw = function(exception) {};
 
 
-// TODO(johnlenz): Array and Arguments should be Iterable.
-
-
 
 /**
  * @param {number} value
@@ -195,6 +192,15 @@ Object.is;
  */
 Number.prototype.toLocaleString = function(opt_locales, opt_options) {};
 
+/**
+ * Returns the wrapped primitive value of this Number object.
+ * @return {number}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/valueOf
+ * @override
+ */
+Number.prototype.valueOf = function() {};
+
 
 /**
  * Pads the end of the string so that it reaches the given length.
@@ -315,7 +321,6 @@ function Transferable() {}
 /**
  * @param {number} length The length in bytes
  * @constructor
- * @noalias
  * @throws {Error}
  * @implements {Transferable}
  */
@@ -343,7 +348,6 @@ ArrayBuffer.isView = function(arg) {};
 
 /**
  * @constructor
- * @noalias
  */
 function ArrayBufferView() {}
 
@@ -635,7 +639,6 @@ TypedArray.prototype[Symbol.iterator] = function() {};
  * @param {number=} opt_length
  * @constructor
  * @extends {TypedArray}
- * @noalias
  * @throws {Error}
  * @modifies {arguments} If the user passes a backing array, then indexed
  *     accesses will modify the backing array. JSCompiler does not model
@@ -679,7 +682,6 @@ Int8Array.of = function(var_args) {};
  * @param {number=} opt_length
  * @constructor
  * @extends {TypedArray}
- * @noalias
  * @throws {Error}
  * @modifies {arguments}
  */
@@ -713,7 +715,6 @@ Uint8Array.of = function(var_args) {};
  * @param {number=} opt_length
  * @constructor
  * @extends {TypedArray}
- * @noalias
  * @throws {Error}
  * @modifies {arguments}
  */
@@ -756,7 +757,6 @@ var CanvasPixelArray;
  * @param {number=} opt_length
  * @constructor
  * @extends {TypedArray}
- * @noalias
  * @throws {Error}
  * @modifies {arguments}
  */
@@ -790,7 +790,6 @@ Int16Array.of = function(var_args) {};
  * @param {number=} opt_length
  * @constructor
  * @extends {TypedArray}
- * @noalias
  * @throws {Error}
  * @modifies {arguments}
  */
@@ -824,7 +823,6 @@ Uint16Array.of = function(var_args) {};
  * @param {number=} opt_length
  * @constructor
  * @extends {TypedArray}
- * @noalias
  * @throws {Error}
  * @modifies {arguments}
  */
@@ -858,7 +856,6 @@ Int32Array.of = function(var_args) {};
  * @param {number=} opt_length
  * @constructor
  * @extends {TypedArray}
- * @noalias
  * @throws {Error}
  * @modifies {arguments}
  */
@@ -892,7 +889,6 @@ Uint32Array.of = function(var_args) {};
  * @param {number=} opt_length
  * @constructor
  * @extends {TypedArray}
- * @noalias
  * @throws {Error}
  * @modifies {arguments}
  */
@@ -926,7 +922,6 @@ Float32Array.of = function(var_args) {};
  * @param {number=} opt_length
  * @constructor
  * @extends {TypedArray}
- * @noalias
  * @throws {Error}
  * @modifies {arguments}
  */
@@ -959,7 +954,6 @@ Float64Array.of = function(var_args) {};
  * @param {number=} opt_byteLength
  * @constructor
  * @extends {ArrayBufferView}
- * @noalias
  * @throws {Error}
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays/DataView
  */

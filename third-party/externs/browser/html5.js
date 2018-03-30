@@ -1545,6 +1545,13 @@ HTMLElement.prototype.attachedCallback;
  */
 HTMLElement.prototype.detachedCallback;
 
+/**
+ * Cryptographic nonce used by Content Security Policy.
+ * @see https://html.spec.whatwg.org/multipage/dom.html#elements-in-the-dom:noncedelement
+ * @type {?string}
+ */
+HTMLElement.prototype.nonce;
+
 /** @type {string} */
 HTMLAnchorElement.prototype.download;
 
@@ -1599,6 +1606,12 @@ HTMLIFrameElement.prototype.srcdoc;
  * @see http://www.w3.org/TR/2012/WD-html5-20121025/the-iframe-element.html#attr-iframe-sandbox
  */
 HTMLIFrameElement.prototype.sandbox;
+
+/**
+ * @type {Window}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement/contentWindow
+ */
+HTMLIFrameElement.prototype.contentWindow;
 
 /** @type {string} */
 HTMLInputElement.prototype.autocomplete;
@@ -1670,34 +1683,31 @@ HTMLInputElement.prototype.stepUp = function(opt_n) {};
  */
 function HTMLMediaElement() {}
 
-/**
- * @type {number}
- * @const
- */
+/** @const {number} */
+HTMLMediaElement.NETWORK_EMPTY;  // = 0
+
+/** @const {number} */
+HTMLMediaElement.NETWORK_IDLE;  // = 1
+
+/** @const {number} */
+HTMLMediaElement.NETWORK_LOADING;  // = 2
+
+/** @const {number} */
+HTMLMediaElement.NETWORK_NO_SOURCE;  // = 3
+
+/** @const {number} */
 HTMLMediaElement.HAVE_NOTHING;  // = 0
 
-/**
- * @type {number}
- * @const
- */
+/** @const {number} */
 HTMLMediaElement.HAVE_METADATA;  // = 1
 
-/**
- * @type {number}
- * @const
- */
+/** @const {number} */
 HTMLMediaElement.HAVE_CURRENT_DATA;  // = 2
 
-/**
- * @type {number}
- * @const
- */
+/** @const {number} */
 HTMLMediaElement.HAVE_FUTURE_DATA;  // = 3
 
-/**
- * @type {number}
- * @const
- */
+/** @const {number} */
 HTMLMediaElement.HAVE_ENOUGH_DATA;  // = 4
 
 /** @type {MediaError} */
@@ -3645,7 +3655,7 @@ MutationRecord.prototype.oldValue;
 
 /**
  * @see http://www.w3.org/TR/domcore/#mutation-observers
- * @param {function(Array<MutationRecord>, MutationObserver)} callback
+ * @param {function(Array<!MutationRecord>, MutationObserver)} callback
  * @constructor
  */
 function MutationObserver(callback) {}
