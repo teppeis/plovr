@@ -36,14 +36,41 @@ ServiceWorker.prototype.state;
 /** @type {?function(!Event)} */
 ServiceWorker.prototype.onstatechange;
 
-/** @enum {string} */
-var ServiceWorkerState = {
-  INSTALLING: 'installing',
-  INSTALLED: 'installed',
-  ACTIVATING: 'activating',
-  ACTIVATED: 'activated',
-  REDUNDANT: 'redundant'
-};
+/**
+ *  Set of possible string values: 'installing', 'installed', 'activating',
+ * 'activated', 'redundant'.
+ *  @typedef {string}
+ */
+var ServiceWorkerState;
+
+/**
+ * @see https://w3c.github.io/ServiceWorker/#navigationpreloadmanager
+ * @constructor
+ */
+function NavigationPreloadManager() {}
+
+/** @return {!Promise<void>} */
+NavigationPreloadManager.prototype.enable = function() {};
+
+/** @return {!Promise<void>} */
+NavigationPreloadManager.prototype.disable = function() {};
+
+/**
+ * @param {string=} value
+ * @return {!Promise<void>}
+ */
+NavigationPreloadManager.prototype.setHeaderValue = function(value) {};
+
+/** @return {!Promise<NavigationPreloadState>} */
+NavigationPreloadManager.prototype.getState = function() {};
+
+/**
+ *  @typedef {{
+ *   enabled: (boolean|undefined),
+ *   headerValue: (string|undefined)
+ * }}
+ */
+var NavigationPreloadState;
 
 /**
  * @see https://w3c.github.io/push-api/
@@ -81,7 +108,7 @@ function PushManager() {}
 
 /**
  * @param {PushSubscriptionOptions=} opt_options
- * @return {!Promise<PushSubscription>}
+ * @return {!Promise<!PushSubscription>}
  */
 PushManager.prototype.subscribe = function(opt_options) {};
 
@@ -92,6 +119,36 @@ PushManager.prototype.getSubscription = function() {};
 // This is commented out since it has not been implemented yet in Chrome beta.
 // Uncomment once it is available.
 // PushManager.prototype.hasPermission = function() {};
+
+/**
+ * @see https://wicg.github.io/BackgroundSync/spec/#sync-manager-interface
+ * @constructor
+ */
+function SyncManager() {}
+
+/**
+ * @param {string} tag
+ * @return {!Promise<void>}
+ */
+SyncManager.prototype.register = function(tag) {}
+
+/**
+ * @return {!Promise<Array<string>>}
+ */
+SyncManager.prototype.getTags = function() {}
+
+/**
+ * @see https://wicg.github.io/BackgroundSync/spec/#sync-event
+ * @constructor
+ * @extends{ExtendableEvent}
+ */
+function SyncEvent() {}
+
+/** @type {string} */
+SyncEvent.prototype.tag;
+
+/** @type {boolean} */
+SyncEvent.prototype.lastChance;
 
 /**
  * @typedef {{userVisibleOnly: (boolean|undefined)}}
@@ -147,6 +204,9 @@ ServiceWorkerRegistration.prototype.waiting;
 /** @type {ServiceWorker} */
 ServiceWorkerRegistration.prototype.active;
 
+/** @type {NavigationPreloadManager} */
+ServiceWorkerRegistration.prototype.navigationPreload;
+
 /** @type {string} */
 ServiceWorkerRegistration.prototype.scope;
 
@@ -180,6 +240,12 @@ ServiceWorkerRegistration.prototype.showNotification =
  * @return {!Promise<?Array<?Notification>>}
  */
 ServiceWorkerRegistration.prototype.getNotifications = function(opt_filter) {};
+
+/**
+ * @see https://wicg.github.io/BackgroundSync/spec/#service-worker-registration-extensions
+ * @type {!SyncManager}
+ */
+ServiceWorkerRegistration.prototype.sync;
 
 /**
  * @see http://www.w3.org/TR/service-workers/#service-worker-container-interface
@@ -219,7 +285,7 @@ ServiceWorkerContainer.prototype.oncontrollerchange;
 ServiceWorkerContainer.prototype.onerror;
 
 /**
- * @typedef {{scope: string}}
+ * @typedef {{scope: (string|undefined), useCache: (boolean|undefined)}}
  */
 var RegistrationOptions;
 
@@ -278,7 +344,7 @@ ServiceWorkerGlobalScope.prototype.onevicted;
 /** @type {?function(!MessageEvent)} */
 ServiceWorkerGlobalScope.prototype.onmessage;
 
-/** @type {IDBFactory} */
+/** @type {!IDBFactory|undefined} */
 ServiceWorkerGlobalScope.prototype.indexedDB;
 
 /**
@@ -302,6 +368,9 @@ ServiceWorkerClient.prototype.visibilityState;
 /** @type {string} */
 ServiceWorkerClient.prototype.url;
 
+/** @type {string} */
+ServiceWorkerClient.prototype.id;
+
 /**
  * // TODO(mtragut): Possibly replace the type with enum ContextFrameType once
  * the enum is defined.
@@ -318,6 +387,12 @@ ServiceWorkerClient.prototype.postMessage = function(message, opt_transfer) {};
 
 /** @return {!Promise} */
 ServiceWorkerClient.prototype.focus = function() {};
+
+/**
+ * @param {string} url
+ * @return {!Promise<!ServiceWorkerClient>}
+ */
+ServiceWorkerClient.prototype.navigate = function(url) {};
 
 /**
  * @see http://www.w3.org/TR/service-workers/#service-worker-clients-interface
@@ -350,6 +425,12 @@ ServiceWorkerClients.prototype.claim = function() {};
  * @return {!Promise<!ServiceWorkerClient>}
  */
 ServiceWorkerClients.prototype.openWindow = function(url) {};
+
+/**
+ * @param {string} id
+ * @return {!Promise<!ServiceWorkerClient|undefined>}
+ */
+ServiceWorkerClients.prototype.get = function(id) {};
 
 /** @typedef {{includeUncontrolled: (boolean|undefined)}} */
 var ServiceWorkerClientQueryOptions;
@@ -508,21 +589,38 @@ var InstallEventInit;
  * @constructor
  * @param {string} type
  * @param {FetchEventInit=} opt_eventInitDict
- * @extends {Event}
+ * @extends {ExtendableEvent}
  */
 function FetchEvent(type, opt_eventInitDict) {}
 
 /** @type {!Request} */
 FetchEvent.prototype.request;
 
-/** @type {!ServiceWorkerClient} */
+/**
+ * @type {!Promise<Response>}
+ */
+FetchEvent.prototype.preloadResponse;
+
+/**
+ * @type {!ServiceWorkerClient}
+ * @deprecated
+ */
 FetchEvent.prototype.client;
+
+/** @type {?string} */
+FetchEvent.prototype.clientId;
 
 /** @type {!boolean} */
 FetchEvent.prototype.isReload;
 
+/** @type {?string} */
+FetchEvent.prototype.targetClientId;
+
+/** @type {?string} */
+FetchEvent.prototype.reservedClientId;
+
 /**
- * @param {(Response|Promise<Response>)} r
+ * @param {(Response|IThenable<Response>)} r
  * @return {undefined}
  */
 FetchEvent.prototype.respondWith = function(r) {};
@@ -543,6 +641,7 @@ FetchEvent.prototype.default = function() {};
  *   bubbles: (boolean|undefined),
  *   cancelable: (boolean|undefined),
  *   request: (!Request|undefined),
+ *   preloadResponse: (!Promise<Response>),
  *   client: (!ServiceWorkerClient|undefined),
  *   isReload: (!boolean|undefined)
  * }}

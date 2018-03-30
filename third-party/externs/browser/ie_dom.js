@@ -354,11 +354,13 @@ Window.prototype.offscreenBuffering;
 
 /**
  * @see http://msdn.microsoft.com/en-us/library/ms534389(VS.85).aspx
+ * @type {number|undefined}
  */
 Window.prototype.screenLeft;
 
 /**
  * @see http://msdn.microsoft.com/en-us/library/ms534389(VS.85).aspx
+ * @type {number|undefined}
  */
 Window.prototype.screenTop;
 
@@ -612,11 +614,13 @@ TextRange.prototype.offsetLeft;
 TextRange.prototype.offsetTop;
 
 /**
+ * @type {string}
  * @see http://msdn.microsoft.com/en-us/library/ms534676(VS.85).aspx
  */
 TextRange.prototype.text;
 
 /**
+ * @param {boolean=} opt_toStart
  * @see http://msdn.microsoft.com/en-us/library/ms536371(VS.85).aspx
  */
 TextRange.prototype.collapse;
@@ -662,6 +666,8 @@ TextRange.prototype.getBoundingClientRect;
 TextRange.prototype.getClientRects;
 
 /**
+ * @param {TextRange|ControlRange} range
+ * @return {boolean}
  * @see http://msdn.microsoft.com/en-us/library/ms536450(VS.85).aspx
  */
 TextRange.prototype.inRange;
@@ -682,6 +688,8 @@ TextRange.prototype.move;
 TextRange.prototype.moveEnd;
 
 /**
+ * @param {string} unit
+ * @param {number=} opt_count
  * @see http://msdn.microsoft.com/en-us/library/ms536623(VS.85).aspx
  */
 TextRange.prototype.moveStart;
@@ -703,6 +711,7 @@ TextRange.prototype.moveToPoint;
 
 /**
  * @see http://msdn.microsoft.com/en-us/library/ms536654(VS.85).aspx
+ * @return {?Element}
  */
 TextRange.prototype.parentElement;
 
@@ -742,11 +751,14 @@ TextRange.prototype.queryCommandValue;
 TextRange.prototype.scrollIntoView;
 
 /**
+ * @return {undefined}
  * @see http://msdn.microsoft.com/en-us/library/ms536735(VS.85).aspx
  */
-TextRange.prototype.select;
+TextRange.prototype.select = function() {};
 
 /**
+ * @param {string} how
+ * @param {TextRange|ControlRange} sourceRange
  * @see http://msdn.microsoft.com/en-us/library/ms536745(VS.85).aspx
  */
 TextRange.prototype.setEndPoint;
@@ -833,6 +845,7 @@ Document.prototype.fileSize;
 
 /**
  * @see http://msdn.microsoft.com/en-us/library/ms534331(VS.85).aspx
+ * @type {?Window}
  */
 Document.prototype.parentWindow;
 
@@ -955,6 +968,7 @@ Document.prototype.namespaces;
 
 /**
  * @see http://msdn.microsoft.com/en-us/library/ms537487(VS.85).aspx
+ * @type {!HTMLCollection<!HTMLScriptElement>}
  */
 Document.prototype.scripts;
 
@@ -1011,6 +1025,7 @@ Element.prototype.createTextRange;
 
 /**
  * @see http://msdn.microsoft.com/en-us/library/ms535231(VS.85).aspx
+ * @type {?CSSStyleDeclaration}
  */
 Element.prototype.currentStyle;
 
@@ -1403,6 +1418,22 @@ Navigator.prototype.msMaxTouchPoints;
  * @see http://blogs.msdn.com/b/ie/archive/2011/09/20/touch-input-for-ie10-and-metro-style-apps.aspx
  */
 Navigator.prototype.msPointerEnabled;
+
+/**
+ * @param {(!File|!Blob)} blob
+ * @param {string=} opt_defaultName
+ * @return {boolean}
+ * @see https://msdn.microsoft.com/en-us/library/hh772331(v=vs.85).aspx
+ */
+Navigator.prototype.msSaveBlob = function(blob, opt_defaultName) {};
+
+/**
+ * @param {(!File|!Blob)} blob
+ * @param {string=} opt_defaultName
+ * @return {boolean}
+ * @see https://msdn.microsoft.com/en-us/library/hh772332(v=vs.85).aspx
+ */
+Navigator.prototype.msSaveOrOpenBlob = function(blob, opt_defaultName) {};
 
 /**
  * @type {number}

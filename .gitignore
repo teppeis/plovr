@@ -8,3 +8,5 @@ build/
 package/node_modules
 package/bin/plovr.jar
 package/npm-debug.log
+
+/third-party/target

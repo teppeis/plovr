@@ -32,8 +32,7 @@ Element.prototype.scrollIntoViewIfNeeded = function(opt_center) {};
 
 /**
  * @constructor
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/page/MemoryInfo.idl
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/page/MemoryInfo.cpp
+ * @see https://cs.chromium.org/search/?q=%22interface+MemoryInfo%22+file:idl+file:WebKit+package:chromium&type=cs
  */
 function MemoryInfo() {};
 
@@ -96,8 +95,7 @@ ScriptProfile.prototype.head;
 
 /**
  * @constructor
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/page/Console.idl
- * @see http://trac.webkit.org/browser/trunk/Source/WebCore/page/Console.cpp
+ * @see https://console.spec.whatwg.org/
  */
 function Console() {};
 

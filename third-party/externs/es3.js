@@ -89,9 +89,10 @@ IIterableResult.prototype.value;
  */
 function Iterable() {}
 
-// TODO(johnlenz): remove this when the compiler understands "symbol" natively
+// TODO(johnlenz): remove the suppression when the compiler understands
+// "symbol" natively
 /**
- * @return {Iterator<VALUE>}
+ * @return {!Iterator<VALUE>}
  * @suppress {externsValidation}
  */
 Iterable.prototype[Symbol.iterator] = function() {};
@@ -204,7 +205,7 @@ var undefined;
 /**
  * @param {string} uri
  * @return {string}
- * @nosideeffects
+ * @throws {URIError} when used wrongly.
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURI
  */
 function decodeURI(uri) {}
@@ -212,7 +213,7 @@ function decodeURI(uri) {}
 /**
  * @param {string} uri
  * @return {string}
- * @nosideeffects
+ * @throws {URIError} when used wrongly.
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent
  */
 function decodeURIComponent(uri) {}
@@ -220,7 +221,8 @@ function decodeURIComponent(uri) {}
 /**
  * @param {string} uri
  * @return {string}
- * @nosideeffects
+ * @throws {URIError} if one attempts to encode a surrogate which is not part of
+ * a high-low pair.
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
  */
 function encodeURI(uri) {}
@@ -228,7 +230,8 @@ function encodeURI(uri) {}
 /**
  * @param {string} uri
  * @return {string}
- * @nosideeffects
+ * @throws {URIError} if one attempts to encode a surrogate which is not part of
+ * a high-low pair.
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
  */
 function encodeURIComponent(uri) {}
@@ -660,7 +663,7 @@ Array.prototype.slice = function(opt_begin, opt_end) {};
 /**
  * Sorts the elements of an array in place.
  *
- * @param {function(T,T):number=} opt_compareFunction Specifies a function that
+ * @param {function(T,T):number=} opt_compareFn Specifies a function that
  *     defines the sort order.
  * @this {IArrayLike<T>}
  * @template T
@@ -668,7 +671,7 @@ Array.prototype.slice = function(opt_begin, opt_end) {};
  * @return {!Array<T>}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
  */
-Array.prototype.sort = function(opt_compareFunction) {};
+Array.prototype.sort = function(opt_compareFn) {};
 
 /**
  * Changes the content of an array, adding new elements while removing old
@@ -943,6 +946,14 @@ Boolean.prototype.toSource = function() {};
 Boolean.prototype.toString = function() {};
 
 /**
+ * @return {boolean}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean/valueOf
+ * @override
+ */
+Boolean.prototype.valueOf = function() {};
+
+/**
  * @constructor
  * @param {*=} opt_value
  * @return {number}
@@ -991,31 +1002,31 @@ Number.prototype.toString = function(opt_radix) {};
 
 // Properties.
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_VALUE
  */
 Number.MAX_VALUE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MIN_VALUE
  */
 Number.MIN_VALUE;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/NaN
  */
 Number.NaN;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/NEGATIVE_INFINITY
  */
 Number.NEGATIVE_INFINITY;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/POSITIVE_INFINITY
  */
 Number.POSITIVE_INFINITY;
@@ -1182,49 +1193,49 @@ Math.toSource = function() {};
 // Properties:
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/E
  */
 Math.E;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/LN2
  */
 Math.LN2;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/LN10
  */
 Math.LN10;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/LOG2E
  */
 Math.LOG2E;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/LOG10E
  */
 Math.LOG10E;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/PI
  */
 Math.PI;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/SQRT1_2
  */
 Math.SQRT1_2;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/SQRT2
  */
 Math.SQRT2;
@@ -1688,6 +1699,7 @@ Date.prototype.valueOf;
 
 /**
  * @constructor
+ * @implements {Iterable<string>}
  * @param {*=} opt_str
  * @return {string}
  * @nosideeffects
@@ -1883,24 +1895,23 @@ String.prototype.quote = function() {};
  * This may have side-effects if the replacement function has side-effects.
  *
  * @this {String|string}
- * @param {RegExp|string} regex
- * @param {string|Function} str
- * @param {string=} opt_flags
+ * @param {RegExp|string} pattern
+ * @param {string|Function} replacement
  * @return {string}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace
  */
-String.prototype.replace = function(regex, str, opt_flags) {};
+String.prototype.replace = function(pattern, replacement) {};
 
 /**
  * Executes the search for a match between a regular expression and this String
  * object.
  *
  * @this {String|string}
- * @param {RegExp|string} regexp
+ * @param {RegExp|string} pattern
  * @return {number}
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/search
  */
-String.prototype.search = function(regexp) {};
+String.prototype.search = function(pattern) {};
 
 /**
  * @this {String|string}
@@ -2039,7 +2050,7 @@ String.prototype.length;
  * @param {*=} opt_pattern
  * @param {*=} opt_flags
  * @return {!RegExp}
- * @nosideeffects
+ * @throws {SyntaxError} if opt_pattern is an invalid pattern.
  * @see http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
  */
 function RegExp(opt_pattern, opt_flags) {}

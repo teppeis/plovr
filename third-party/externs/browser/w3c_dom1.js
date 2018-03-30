@@ -117,24 +117,13 @@ DOMImplementation.prototype.hasFeature = function(feature, version) {};
  */
 function Node() {}
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-Node.prototype.addEventListener = function(type, listener, opt_useCapture) {};
+/** @override */
+Node.prototype.addEventListener = function(type, listener, opt_options) {};
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-Node.prototype.removeEventListener = function(type, listener, opt_useCapture) {};
+/** @override */
+Node.prototype.removeEventListener = function(type, listener, opt_options) {};
 
-/**
- * @override
- * @return {boolean}
- */
+/** @override */
 Node.prototype.dispatchEvent = function(evt) {};
 
 /**
@@ -205,7 +194,7 @@ Node.prototype.previousSibling;
 
 /**
  * @param {Node} newChild
- * @return {Node}
+ * @return {!Node}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#method-appendChild
  */
 Node.prototype.appendChild = function(newChild) {};
@@ -460,6 +449,16 @@ NodeList.prototype.length;
 NodeList.prototype.item = function(index) {};
 
 /**
+ * @param {?function(this:S, T, number, !NodeList<T>): ?} callback
+ * @param {S=} opt_thisobj
+ * @this {NodeList<T>}
+ * @template T,S
+ * @return {undefined}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
+ */
+NodeList.prototype.forEach = function(callback, opt_thisobj) {};
+
+/**
  * @constructor
  * @implements {IObject<(string|number), T>}
  * @implements {IArrayLike<T>}
@@ -598,6 +597,14 @@ Attr.prototype.value;
 function Element() {}
 
 /**
+ * An Element always contains a non-null NamedNodeMap containing the attributes
+ * of this node.
+ * @type {!NamedNodeMap<!Attr>}
+ * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#attribute-attributes
+ */
+Element.prototype.attributes;
+
+/**
  * @type {string}
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#attribute-tagName
  */
@@ -716,9 +723,10 @@ Element.prototype.setAttributeNode = function(newAttr) {};
 /**
  * @constructor
  * @extends {CharacterData}
+ * @param {string=} contents Optional textual content.
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-1312295772
  */
-function Text() {}
+function Text(contents) {}
 
 /**
  * @param {number} offset
@@ -844,25 +852,13 @@ ProcessingInstruction.prototype.target;
 function Window() {}
 Window.prototype.Window;
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-Window.prototype.addEventListener = function(type, listener, opt_useCapture) {};
+/** @override */
+Window.prototype.addEventListener = function(type, listener, opt_options) {};
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-Window.prototype.removeEventListener = function(type, listener, opt_useCapture)
-    {};
+/** @override */
+Window.prototype.removeEventListener = function(type, listener, opt_options) {};
 
-/**
- * @override
- * @return {boolean}
- */
+/** @override */
 Window.prototype.dispatchEvent = function(evt) {};
 
 /** @type {?function (Event)} */ Window.prototype.onabort;

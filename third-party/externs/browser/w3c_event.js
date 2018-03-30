@@ -26,30 +26,34 @@
 
 /**
  * @interface
+ * @see https://dom.spec.whatwg.org/#interface-eventtarget
  */
 function EventTarget() {}
 
 /**
  * @param {string} type
  * @param {EventListener|function(!Event):(boolean|undefined)} listener
- * @param {boolean} useCapture
+ * @param {(boolean|!AddEventListenerOptions)=} opt_options
  * @return {undefined}
+ * @see https://dom.spec.whatwg.org/#dom-eventtarget-addeventlistener
  */
-EventTarget.prototype.addEventListener = function(type, listener, useCapture)
-    {};
+EventTarget.prototype.addEventListener = function(type, listener, opt_options) {
+};
 
 /**
  * @param {string} type
  * @param {EventListener|function(!Event):(boolean|undefined)} listener
- * @param {boolean} useCapture
+ * @param {(boolean|!EventListenerOptions)=} opt_options
  * @return {undefined}
+ * @see https://dom.spec.whatwg.org/#dom-eventtarget-removeeventlistener
  */
-EventTarget.prototype.removeEventListener = function(type, listener, useCapture)
-    {};
+EventTarget.prototype.removeEventListener = function(
+    type, listener, opt_options) {};
 
 /**
  * @param {!Event} evt
  * @return {boolean}
+ * @see https://dom.spec.whatwg.org/#dom-eventtarget-dispatchevent
  */
 EventTarget.prototype.dispatchEvent = function(evt) {};
 
@@ -73,12 +77,20 @@ EventListener.prototype.handleEvent = function(evt) {};
 // https://dvcs.w3.org/hg/d4e/raw-file/tip/source_respec.htm#event-constructors
 
 /**
- * @typedef {{
- *   bubbles: (boolean|undefined),
- *   cancelable: (boolean|undefined)
- * }}
+ * @record
+ * @see https://dom.spec.whatwg.org/#dictdef-eventinit
  */
-var EventInit;
+function EventInit() {}
+
+/** @type {(undefined|boolean)} */
+EventInit.prototype.bubbles;
+
+/** @type {(undefined|boolean)} */
+EventInit.prototype.cancelable;
+
+/** @type {(undefined|boolean)} */
+EventInit.prototype.composed;
+
 
 /**
  * @constructor
@@ -88,23 +100,22 @@ var EventInit;
 function Event(type, opt_eventInitDict) {}
 
 /**
- * @type {number}
+ * @const {number}
+ * @see http://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
+ */
+Event.CAPTURING_PHASE;
+
+/**
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
  */
 Event.AT_TARGET;
 
 /**
- * @type {number}
+ * @const {number}
  * @see http://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
  */
 Event.BUBBLING_PHASE;
-
-/**
- * @type {number}
- * @see http://www.w3.org/TR/DOM-Level-2-Events/ecma-script-binding.html
- */
-Event.CAPTURING_PHASE;
-
 
 /** @type {string} */
 Event.prototype.type;
@@ -152,20 +163,21 @@ Event.prototype.preventDefault = function() {};
 
 /**
  * @param {string} eventTypeArg
- * @param {boolean} canBubbleArg
- * @param {boolean} cancelableArg
+ * @param {boolean=} canBubbleArg
+ * @param {boolean=} cancelableArg
  * @return {undefined}
  */
 Event.prototype.initEvent = function(eventTypeArg, canBubbleArg, cancelableArg) {};
 
 /**
- * @typedef {{
- *   bubbles: (boolean|undefined),
- *   cancelable: (boolean|undefined),
- *   detail: *
- * }}
+ * @record
+ * @extends {EventInit}
+ * @see https://dom.spec.whatwg.org/#dictdef-customeventinit
  */
-var CustomEventInit;
+function CustomEventInit() {}
+
+/** @type {(*|undefined)} */
+CustomEventInit.prototype.detail;
 
 /**
  * @constructor
@@ -203,14 +215,17 @@ function DocumentEvent() {}
 DocumentEvent.prototype.createEvent = function(eventType) {};
 
 /**
- * @typedef {{
- *   bubbles: (boolean|undefined),
- *   cancelable: (boolean|undefined),
- *   view: (Window|undefined),
- *   detail: (number|undefined)
- * }}
+ * @record
+ * @extends {EventInit}
+ * @see https://w3c.github.io/uievents/#idl-uieventinit
  */
-var UIEventInit;
+function UIEventInit() {}
+
+/** @type {undefined|?Window} */
+UIEventInit.prototype.view;
+
+/** @type {undefined|number} */
+UIEventInit.prototype.detail;
 
 /**
  * @constructor
@@ -235,25 +250,81 @@ UIEvent.prototype.initUIEvent = function(typeArg, canBubbleArg, cancelableArg,
     viewArg, detailArg) {};
 
 /**
- * @typedef {{
- *   bubbles: (boolean|undefined),
- *   cancelable: (boolean|undefined),
- *   view: (Window|undefined),
- *   detail: (number|undefined),
- *   screenX: (number|undefined),
- *   screenY: (number|undefined),
- *   clientX: (number|undefined),
- *   clientY: (number|undefined),
- *   ctrlKey: (boolean|undefined),
- *   shiftKey: (boolean|undefined),
- *   altKey: (boolean|undefined),
- *   metaKey: (boolean|undefined),
- *   button: (number|undefined),
- *   buttons: (number|undefined),
- *   relatedTarget: (EventTarget|undefined)
- * }}
+ * @record
+ * @extends {UIEventInit}
+ * @see https://w3c.github.io/uievents/#dictdef-eventmodifierinit
  */
-var MouseEventInit;
+function EventModifierInit() {}
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.ctrlKey;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.shiftKey;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.altKey;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.metaKey;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.modifierAltGraph;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.modifierCapsLock;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.modifierFn;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.modifierFnLock;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.modifierHyper;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.modifierNumLock;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.modifierScrollLock;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.modifierSuper;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.modifierSymbol;
+
+/** @type {undefined|boolean} */
+EventModifierInit.prototype.modifierSymbolLock;
+
+/**
+ * @record
+ * @extends {EventModifierInit}
+ * @see https://w3c.github.io/uievents/#idl-mouseeventinit
+ */
+function MouseEventInit() {}
+
+/** @type {undefined|number} */
+MouseEventInit.prototype.screenX;
+
+/** @type {undefined|number} */
+MouseEventInit.prototype.screenY;
+
+/** @type {undefined|number} */
+MouseEventInit.prototype.clientX;
+
+/** @type {undefined|number} */
+MouseEventInit.prototype.clientY;
+
+/** @type {undefined|number} */
+MouseEventInit.prototype.button;
+
+/** @type {undefined|number} */
+MouseEventInit.prototype.buttons;
+
+/** @type {undefined|?EventTarget} */
+MouseEventInit.prototype.relatedTarget;
 
 /**
  * @constructor
@@ -331,24 +402,32 @@ MutationEvent.prototype.initMutationEvent = function(typeArg, canBubbleArg, canc
 
 // DOM3
 /**
- * @typedef {{
- *   bubbles: (boolean|undefined),
- *   cancelable: (boolean|undefined),
- *   view: (Window|undefined),
- *   detail: (number|undefined),
- *   char: (string|undefined),
- *   key: (string|undefined),
- *   code: (string|undefined),
- *   location: (number|undefined),
- *   ctrlKey: (boolean|undefined),
- *   shiftKey: (boolean|undefined),
- *   altKey: (boolean|undefined),
- *   metaKey: (boolean|undefined),
- *   repeat: (boolean|undefined),
- *   locale: (string|undefined)
- * }}
+ * @record
+ * @extends {EventModifierInit}
+ * @see https://w3c.github.io/uievents/#idl-keyboardeventinit
  */
-var KeyboardEventInit;
+function KeyboardEventInit() {}
+
+/** @type {undefined|string} */
+KeyboardEventInit.prototype.key;
+
+/** @type {undefined|string} */
+KeyboardEventInit.prototype.code;
+
+/** @type {undefined|number} */
+KeyboardEventInit.prototype.location;
+
+/** @type {undefined|boolean} */
+KeyboardEventInit.prototype.repeat;
+
+/** @type {undefined|boolean} */
+KeyboardEventInit.prototype.isComposing;
+
+/** @type {undefined|string} */
+KeyboardEventInit.prototype.char;
+
+/** @type {undefined|string} */
+KeyboardEventInit.prototype.locale;
 
 /**
  * @constructor
@@ -380,15 +459,14 @@ KeyboardEvent.prototype.metaKey;
 KeyboardEvent.prototype.getModifierState = function(keyIdentifierArg) {};
 
 /**
- * @typedef {{
- *   bubbles: (boolean|undefined),
- *   cancelable: (boolean|undefined),
- *   view: (Window|undefined),
- *   detail: (number|undefined),
- *   relatedTarget: (EventTarget|undefined)
- * }}
+ * @record
+ * @extends {UIEventInit}
+ * @see https://w3c.github.io/uievents/#idl-focuseventinit
  */
-var FocusEventInit;
+function FocusEventInit() {}
+
+/** @type {undefined|?EventTarget} */
+FocusEventInit.prototype.relatedTarget;
 
 
 /**
@@ -405,3 +483,72 @@ function FocusEvent(type, opt_eventInitDict) {}
 
 /** @type {EventTarget} */
 FocusEvent.prototype.relatedTarget;
+
+
+/**
+ * See https://dom.spec.whatwg.org/#dictdef-eventlisteneroptions
+ * @record
+ */
+var EventListenerOptions = function() {};
+
+/** @type {boolean|undefined} */
+EventListenerOptions.prototype.capture;
+
+/**
+ * See https://dom.spec.whatwg.org/#dictdef-addeventlisteneroptions
+ * @record
+ * @extends {EventListenerOptions}
+ */
+var AddEventListenerOptions = function() {};
+
+/** @type {boolean|undefined} */
+AddEventListenerOptions.prototype.passive;
+
+/** @type {boolean|undefined} */
+AddEventListenerOptions.prototype.once;
+
+/**
+ * @record
+ * @extends {UIEventInit}
+ * @see https://w3c.github.io/uievents/#idl-inputeventinit
+ * @see https://w3c.github.io/input-events/#interface-InputEvent
+ */
+function InputEventInit() {}
+
+/** @type {undefined|?string} */
+InputEventInit.prototype.data;
+
+/** @type {undefined|boolean} */
+InputEventInit.prototype.isComposing;
+
+/** @type {undefined|string} */
+InputEventInit.prototype.inputType;
+
+/** @type {undefined|?DataTransfer} */
+InputEventInit.prototype.dataTransfer;
+
+
+// TODO(charleyroy): Add getTargetRanges() once a consensus has been made
+// regarding how to structure these values. See
+// https://github.com/w3c/input-events/issues/38.
+/**
+ * @constructor
+ * @extends {UIEvent}
+ * @param {string} type
+ * @param {InputEventInit=} opt_eventInitDict
+ * @see https://www.w3.org/TR/uievents/#interface-inputevent
+ * @see https://w3c.github.io/input-events/#interface-InputEvent
+ */
+function InputEvent(type, opt_eventInitDict) {}
+
+/** @type {string} */
+InputEvent.prototype.data;
+
+/** @type {boolean} */
+InputEvent.prototype.isComposed;
+
+/** @type {string} */
+InputEvent.prototype.inputType;
+
+/** @type {?DataTransfer} */
+InputEvent.prototype.dataTransfer;

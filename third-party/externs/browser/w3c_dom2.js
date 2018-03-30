@@ -72,6 +72,7 @@ Document.prototype.importNode = function(externalNode, deep) {};
  * @constructor
  * @implements {IObject<(string|number),T>}
  * @implements {IArrayLike<T>}
+ * @implements {Iterable<T>}
  * @template T
  * @see http://www.w3.org/TR/2000/CR-DOM-Level-2-20000510/html.html#ID-75708506
  */
@@ -153,37 +154,37 @@ HTMLDocument.prototype.domain;
 HTMLDocument.prototype.URL;
 
 /**
- * @type {HTMLBodyElement}
+ * @type {!HTMLBodyElement}
  * @see http://www.w3.org/TR/2000/CR-DOM-Level-2-20000510/html.html#ID-56360201
  */
 HTMLDocument.prototype.body;
 
 /**
- * @type {HTMLCollection<!HTMLImageElement>}
+ * @type {!HTMLCollection<!HTMLImageElement>}
  * @see http://www.w3.org/TR/2000/CR-DOM-Level-2-20000510/html.html#ID-90379117
  */
 HTMLDocument.prototype.images;
 
 /**
- * @type {HTMLCollection<!HTMLAppletElement>}
+ * @type {!HTMLCollection<!HTMLAppletElement>}
  * @see http://www.w3.org/TR/2000/CR-DOM-Level-2-20000510/html.html#ID-85113862
  */
 HTMLDocument.prototype.applets;
 
 /**
- * @type {HTMLCollection<(!HTMLAnchorElement|!HTMLAreaElement)>}
+ * @type {!HTMLCollection<(!HTMLAnchorElement|!HTMLAreaElement)>}
  * @see http://www.w3.org/TR/2000/CR-DOM-Level-2-20000510/html.html#ID-7068919
  */
 HTMLDocument.prototype.links;
 
 /**
- * @type {HTMLCollection<!HTMLFormElement>}
+ * @type {!HTMLCollection<!HTMLFormElement>}
  * @see http://www.w3.org/TR/2000/CR-DOM-Level-2-20000510/html.html#ID-1689064
  */
 HTMLDocument.prototype.forms;
 
 /**
- * @type {HTMLCollection<!HTMLAnchorElement>}
+ * @type {!HTMLCollection<!HTMLAnchorElement>}
  * @see http://www.w3.org/TR/2000/CR-DOM-Level-2-20000510/html.html#ID-7577272
  */
 HTMLDocument.prototype.anchors;
@@ -195,11 +196,15 @@ HTMLDocument.prototype.anchors;
 HTMLDocument.prototype.cookie;
 
 /**
+ * @param {string=} opt_mimeType
+ * @param {string=} opt_replace
  * @return {undefined}
  * @see http://www.w3.org/TR/2000/CR-DOM-Level-2-20000510/html.html#ID-72161170
+ * Even though official spec says "no parameters" some old browsers might take
+ * optional parameters: https://msdn.microsoft.com/en-us/library/ms536652(v=vs.85).aspx
  * @override
  */
-HTMLDocument.prototype.open = function() {};
+HTMLDocument.prototype.open = function(opt_mimeType, opt_replace) {};
 
 /**
  * @return {undefined}
@@ -718,7 +723,7 @@ HTMLFormControlsCollection.prototype.namedItem = function(name) {};
 function HTMLFormElement() {}
 
 /**
- * @type {HTMLFormControlsCollection<!HTMLElement>}
+ * @type {!HTMLFormControlsCollection<!HTMLElement>}
  * @see http://www.w3.org/TR/2000/CR-DOM-Level-2-20000510/html.html#ID-76728479
  */
 HTMLFormElement.prototype.elements;
@@ -2256,7 +2261,7 @@ HTMLTableElement.prototype.deleteTHead = function() {};
 /**
  * @param {number=} opt_index
  * @return {HTMLElement}
- * @see http://www.w3.org/TR/2000/CR-DOM-Level-2-20000510/html.html#ID-39872903
+ * @see https://www.w3.org/TR/html5/tabular-data.html#htmltableelement
  */
 HTMLTableElement.prototype.insertRow = function(opt_index) {};
 
@@ -2362,11 +2367,11 @@ HTMLTableSectionElement.prototype.vAlign;
 HTMLTableSectionElement.prototype.deleteRow = function(index) {};
 
 /**
- * @param {number} index
+ * @param {number=} opt_index
  * @return {HTMLElement}
- * @see http://www.w3.org/TR/2000/CR-DOM-Level-2-20000510/html.html#ID-93995626
+ * @see https://www.w3.org/TR/html5/tabular-data.html#htmltablesectionelement
  */
-HTMLTableSectionElement.prototype.insertRow = function(index) {};
+HTMLTableSectionElement.prototype.insertRow = function(opt_index) {};
 
 /**
  * @constructor

@@ -58,6 +58,7 @@ function PerformanceEntry() {}
 /** @type {number} */ PerformanceEntry.prototype.duration;
 
 /**
+ * https://www.w3.org/TR/resource-timing-2/#performanceresourcetiming
  * @constructor
  * @extends {PerformanceEntry}
  */
@@ -75,6 +76,41 @@ PerformanceResourceTiming.prototype.secureConnectionStart;
 /** @type {number} */ PerformanceResourceTiming.prototype.responseStart;
 /** @type {number} */ PerformanceResourceTiming.prototype.responseEnd;
 /** @type {string} */ PerformanceResourceTiming.prototype.initiatorType;
+/** @type {number|undefined} */
+PerformanceResourceTiming.prototype.transferSize;
+/** @type {number|undefined} */
+PerformanceResourceTiming.prototype.encodedBodySize;
+/** @type {number|undefined} */
+PerformanceResourceTiming.prototype.decodedBodySize;
+/** @type {number|undefined} */
+PerformanceResourceTiming.prototype.workerStart;
+/** @type {string} */ PerformanceResourceTiming.prototype.nextHopProtocol;
+
+/**
+ * Possible values are 'navigate', 'reload', 'back_forward', and 'prerender'.
+ * See https://w3c.github.io/navigation-timing/#sec-performance-navigation-types
+ * @typedef {string}
+ */
+var NavigationType;
+
+/**
+ * https://w3c.github.io/navigation-timing/#sec-PerformanceNavigationTiming
+ * @constructor
+ * @extends {PerformanceResourceTiming}
+ */
+function PerformanceNavigationTiming() {}
+/** @type {number} */ PerformanceNavigationTiming.prototype.unloadEventStart;
+/** @type {number} */ PerformanceNavigationTiming.prototype.unloadEventEnd;
+/** @type {number} */ PerformanceNavigationTiming.prototype.domInteractive;
+/** @type {number} */ PerformanceNavigationTiming.prototype
+    .domContentLoadedEventStart;
+/** @type {number} */ PerformanceNavigationTiming.prototype
+    .domContentLoadedEventEnd;
+/** @type {number} */ PerformanceNavigationTiming.prototype.domComplete;
+/** @type {number} */ PerformanceNavigationTiming.prototype.loadEventStart;
+/** @type {number} */ PerformanceNavigationTiming.prototype.loadEventEnd;
+/** @type {NavigationType} */ PerformanceNavigationTiming.prototype.type;
+/** @type {number} */ PerformanceNavigationTiming.prototype.redirectCount;
 
 /** @constructor */
 function PerformanceNavigation() {}
@@ -84,13 +120,6 @@ function PerformanceNavigation() {}
 /** @type {number} */ PerformanceNavigation.prototype.TYPE_RESERVED = 255;
 /** @type {number} */ PerformanceNavigation.prototype.type;
 /** @type {number} */ PerformanceNavigation.prototype.redirectCount;
-
-// Only available in WebKit, and only with the --enable-memory-info flag.
-/** @constructor */
-function PerformanceMemory() {}
-/** @type {number} */ PerformanceMemory.prototype.jsHeapSizeLimit;
-/** @type {number} */ PerformanceMemory.prototype.totalJSHeapSize;
-/** @type {number} */ PerformanceMemory.prototype.usedJSHeapSize;
 
 /** @constructor */
 function Performance() {}
@@ -119,7 +148,7 @@ Performance.prototype.webkitClearResourceTimings = function() {};
 Performance.prototype.setResourceTimingBufferSize = function(maxSize) {};
 
 /**
- * @return {Array<PerformanceEntry>} A copy of the PerformanceEntry list,
+ * @return {!Array<!PerformanceEntry>} A copy of the PerformanceEntry list,
  *     in chronological order with respect to startTime.
  * @nosideeffects
  */
@@ -128,7 +157,7 @@ Performance.prototype.getEntries = function() {};
 /**
  * @param {string} entryType Only return {@code PerformanceEntry}s with this
  *     entryType.
- * @return {Array<PerformanceEntry>} A copy of the PerformanceEntry list,
+ * @return {!Array<!PerformanceEntry>} A copy of the PerformanceEntry list,
  *     in chronological order with respect to startTime.
  * @nosideeffects
  */
@@ -138,14 +167,15 @@ Performance.prototype.getEntriesByType = function(entryType) {};
  * @param {string} name Only return {@code PerformanceEntry}s with this name.
  * @param {string=} opt_entryType Only return {@code PerformanceEntry}s with
  *     this entryType.
- * @return {Array<PerformanceEntry>} PerformanceEntry list in chronological
+ * @return {!Array<!PerformanceEntry>} PerformanceEntry list in chronological
  *     order with respect to startTime.
  * @nosideeffects
  */
 Performance.prototype.getEntriesByName = function(name, opt_entryType) {};
 
-// Only available in WebKit, and only with the --enable-memory-info flag.
-/** @type {PerformanceMemory} */ Performance.prototype.memory;
+// Nonstandard. Only available in Blink.
+// Returns more granular results with the --enable-memory-info flag.
+/** @type {MemoryInfo} */ Performance.prototype.memory;
 
 /**
  * @return {number}
@@ -177,8 +207,8 @@ Performance.prototype.clearMarks = function(opt_markName) {};
  * @param {string=} opt_endMark
  * @return {undefined}
  */
-Performance.prototype.measure =
-    function(measureName, opt_startMark, opt_endMark) {};
+Performance.prototype.measure = function(
+    measureName, opt_startMark, opt_endMark) {};
 
 /**
  * @param {string=} opt_measureName
@@ -188,3 +218,66 @@ Performance.prototype.clearMeasures = function(opt_measureName) {};
 
 /** @type {Performance} */
 Window.prototype.performance;
+
+/**
+ * @type {!Performance}
+ * @suppress {duplicate}
+ */
+var performance;
+
+/**
+ * @constructor
+ * @extends {Performance}
+ */
+function WorkerPerformance() {}
+
+/**
+ * @typedef {function(!PerformanceObserverEntryList, !PerformanceObserver): void}
+ */
+var PerformanceObserverCallback;
+
+/**
+ * See:
+ * https://w3c.github.io/performance-timeline/#the-performanceobserver-interface
+ * @constructor
+ * @param {!PerformanceObserverCallback} callback
+ */
+function PerformanceObserver(callback) {}
+
+/**
+ * @param {!PerformanceObserverInit} options
+ */
+PerformanceObserver.prototype.observe = function(options) {};
+
+/** @return {void} */
+PerformanceObserver.prototype.disconnect = function() {};
+
+/**
+ * @record
+ */
+function PerformanceObserverInit() {}
+
+/** @type {undefined|!Array<string>} */
+PerformanceObserverInit.prototype.entryTypes;
+/** @type {undefined|boolean} */
+PerformanceObserverInit.prototype.buffered;
+
+/**
+ * @constructor
+ */
+function PerformanceObserverEntryList() {}
+
+/** @return {!Array<!PerformanceEntry>} */
+PerformanceObserverEntryList.prototype.getEntries = function() {};
+/**
+ * @param {string} type
+ * @return {!Array<!PerformanceEntry>}
+ */
+PerformanceObserverEntryList.prototype.getEntriesByName = function(type) {};
+/**
+ * @param {string} name
+ * @param {string=} opt_type
+ * @return {!Array<!PerformanceEntry>}
+ */
+PerformanceObserverEntryList.prototype.getEntriesByType = function(
+    name, opt_type) {};

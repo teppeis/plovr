@@ -44,26 +44,19 @@ var MidiPermissionDescriptor;
 
 
 /**
- * @enum {string}
+ * Set of possible values: 'geolocation', 'notifications', 'push', 'midi'.
+ * @typedef {string}
  * @see https://w3c.github.io/permissions/#idl-def-PermissionName
  */
-var PermissionName = {
-  GEOLOCATION: 'geolocation',
-  NOTIFICATIONS: 'notifications',
-  PUSH: 'push',
-  MIDI: 'midi'
-};
+var PermissionName;
 
 
 /**
- * @enum {string}
+ * Set of possible values: 'granted', 'denied', 'prompt'.
+ * @typedef {string}
  * @see https://w3c.github.io/permissions/#idl-def-PermissionState
  */
-var PermissionState = {
-  GRANTED: 'granted',
-  DENIED: 'denied',
-  PROMPT: 'prompt'
-};
+var PermissionState;
 
 
 /**
@@ -85,27 +78,15 @@ PermissionStatus.prototype.status;
 /** @type {?function(!Event)} */
 PermissionStatus.prototype.onchange;
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-PermissionStatus.prototype.addEventListener = function(type,
-                                                       listener,
-                                                       opt_useCapture) {};
+/** @override */
+PermissionStatus.prototype.addEventListener = function(
+    type, listener, opt_options) {};
 
-/**
- * @param {boolean=} opt_useCapture
- * @override
- * @return {undefined}
- */
-PermissionStatus.prototype.removeEventListener = function(type,
-                                                          listener,
-                                                          opt_useCapture) {};
-/**
- * @override
- * @return {boolean}
- */
+/** @override */
+PermissionStatus.prototype.removeEventListener = function(
+    type, listener, opt_options) {};
+
+/** @override */
 PermissionStatus.prototype.dispatchEvent = function(evt) {};
 
 

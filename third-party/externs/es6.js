@@ -197,6 +197,32 @@ Number.prototype.toLocaleString = function(opt_locales, opt_options) {};
 
 
 /**
+ * Pads the end of the string so that it reaches the given length.
+ * NOTE: this is an ES2017 (ES8) extern.
+ *
+ * @param {number} targetLength The target length.
+ * @param {string=} opt_padString The string to pad with.
+ * @this {String|string}
+ * @return {string}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padEnd
+ */
+String.prototype.padEnd = function(targetLength, opt_padString) {};
+
+/**
+ * Pads the start of the string so that it reaches the given length.
+ * NOTE: this is an ES2017 (ES8) extern.
+ *
+ * @param {number} targetLength The target length.
+ * @param {string=} opt_padString The string to pad with.
+ * @this {String|string}
+ * @return {string}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
+ */
+String.prototype.padStart = function(targetLength, opt_padString) {};
+
+/**
  * Repeats the string the given number of times.
  *
  * @param {number} count The number of times the string is repeated.
@@ -306,6 +332,14 @@ ArrayBuffer.prototype.byteLength;
  */
 ArrayBuffer.prototype.slice = function(begin, opt_end) {};
 
+/**
+ * @param {*} arg
+ * @return {boolean}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer/isView
+ */
+ArrayBuffer.isView = function(arg) {};
+
 
 /**
  * @constructor
@@ -324,57 +358,283 @@ ArrayBufferView.prototype.byteLength;
 
 
 /**
+ * @param {number} length The length in bytes
+ * @constructor
+ * @throws {Error}
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer
+ */
+function SharedArrayBuffer(length) {}
+
+/** @type {number} */
+SharedArrayBuffer.prototype.byteLength;
+
+/**
+ * @param {number} begin
+ * @param {number=} opt_end
+ * @return {!SharedArrayBuffer}
+ * @nosideeffects
+ */
+SharedArrayBuffer.prototype.slice = function(begin, opt_end) {};
+
+
+/**
  * @typedef {!ArrayBuffer|!ArrayBufferView}
  */
 var BufferSource;
 
 
 /**
- * An artificial interface to describe methods available on all TypedArray
- * objects so that they can be operated on in type safe but generic way.
- * @record
- * @extends {IArrayLike<number>}
+ * @constructor
+ * @implements {IArrayLike<number>}
+ * @implements {Iterable<number>}
+ * @extends {ArrayBufferView}
  */
-function ITypedArray() {}
-
-/** @type {number} */
-ITypedArray.prototype.length;
+function TypedArray() {};
 
 /** @const {number} */
-ITypedArray.prototype.BYTES_PER_ELEMENT;
+TypedArray.prototype.BYTES_PER_ELEMENT;
 
 /**
- * @param {ArrayBufferView|Array<number>} array
- * @param {number=} opt_offset
- * @return {undefined}
- */
-ITypedArray.prototype.set = function(array, opt_offset) {};
-
-/**
- * @param {number} begin
+ * @param {number} target
+ * @param {number} start
  * @param {number=} opt_end
- * @return {ITypedArray}
- * @nosideeffects
+ * @return {THIS}
+ * @this {THIS}
+ * @template THIS
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/copyWithin
  */
-ITypedArray.prototype.subarray = function(begin, opt_end) {};
+TypedArray.prototype.copyWithin = function(target, start, opt_end) {};
+
+/**
+ * @return {!IteratorIterable<!Array<number>>}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/entries
+ */
+TypedArray.prototype.entries = function() {};
+
+/**
+ * @param {function(this:S, number, number, !TypedArray) : ?} callback
+ * @param {S=} opt_thisArg
+ * @return {boolean}
+ * @template S
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/every
+ */
+TypedArray.prototype.every = function(callback, opt_thisArg) {};
 
 /**
  * @param {number} value
  * @param {number=} opt_begin
  * @param {number=} opt_end
- * @return {ITypedArray}
+ * @return {THIS}
+ * @this {THIS}
+ * @template THIS
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/fill
  */
-ITypedArray.prototype.fill = function(value, opt_begin, opt_end) {};
-
+TypedArray.prototype.fill = function(value, opt_begin, opt_end) {};
 
 /**
- * @param {number|ArrayBufferView|Array<number>|ArrayBuffer} length or array
- *     or buffer
+ * @param {function(this:S, number, number, !TypedArray) : boolean} callback
+ * @param {S=} opt_thisArg
+ * @return {THIS}
+ * @this {THIS}
+ * @template THIS,S
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/filter
+ */
+TypedArray.prototype.filter = function(callback, opt_thisArg) {};
+
+/**
+ * @param {function(this:S, number, number, !TypedArray) : boolean} callback
+ * @param {S=} opt_thisArg
+ * @return {(number|undefined)}
+ * @template S
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/find
+ */
+TypedArray.prototype.find = function(callback, opt_thisArg) {};
+
+/**
+ * @param {function(this:S, number, number, !TypedArray) : boolean} callback
+ * @param {S=} opt_thisArg
+ * @return {number}
+ * @template S
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/findIndex
+ */
+TypedArray.prototype.findIndex = function(callback, opt_thisArg) {};
+
+/**
+ * @param {function(this:S, number, number, !TypedArray) : ?} callback
+ * @param {S=} opt_thisArg
+ * @return {undefined}
+ * @template S
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/forEach
+ */
+TypedArray.prototype.forEach = function(callback, opt_thisArg) {};
+
+/**
+ * NOTE: this is an ES2016 (ES7) extern.
+ * @param {number} searchElement
+ * @param {number=} opt_fromIndex
+ * @return {boolean}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/includes
+ */
+TypedArray.prototype.includes = function(searchElement, opt_fromIndex) {};
+
+/**
+ * @param {number} searchElement
+ * @param {number=} opt_fromIndex
+ * @return {number}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/indexOf
+ */
+TypedArray.prototype.indexOf = function(searchElement, opt_fromIndex) {};
+
+/**
+ * @param {string=} opt_separator
+ * @return {string}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/join
+ */
+TypedArray.prototype.join = function(opt_separator) {};
+
+/**
+ * @return {!IteratorIterable<number>}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/keys
+ */
+TypedArray.prototype.keys = function() {};
+
+/**
+ * @param {number} searchElement
+ * @param {number=} opt_fromIndex
+ * @return {number}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/lastIndexOf
+ */
+TypedArray.prototype.lastIndexOf = function(searchElement, opt_fromIndex) {};
+
+/** @type {number} */
+TypedArray.prototype.length;
+
+/**
+ * @param {function(this:S, number, number, !TypedArray) : number} callback
+ * @param {S=} opt_thisArg
+ * @return {THIS}
+ * @this {THIS}
+ * @template THIS,S
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/map
+ */
+TypedArray.prototype.map = function(callback, opt_thisArg) {};
+
+/**
+ * @param {function((number|INIT|RET), number, number, !TypedArray) : RET} callback
+ * @param {INIT=} opt_initialValue
+ * @return {RET}
+ * @template INIT,RET
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/reduce
+ */
+TypedArray.prototype.reduce = function(callback, opt_initialValue) {};
+
+/**
+ * @param {function((number|INIT|RET), number, number, !TypedArray) : RET} callback
+ * @param {INIT=} opt_initialValue
+ * @return {RET}
+ * @template INIT,RET
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/reduceRight
+ */
+TypedArray.prototype.reduceRight = function(callback, opt_initialValue) {};
+
+/**
+ * @return {THIS}
+ * @this {THIS}
+ * @template THIS
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/reverse
+ */
+TypedArray.prototype.reverse = function() {};
+
+/**
+ * @param {!ArrayBufferView|!Array<number>} array
+ * @param {number=} opt_offset
+ * @return {undefined}
+ * @throws {!RangeError}
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/set
+ */
+TypedArray.prototype.set = function(array, opt_offset) {};
+
+/**
+ * @param {number=} opt_begin
+ * @param {number=} opt_end
+ * @return {THIS}
+ * @this {THIS}
+ * @template THIS
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/slice
+ */
+TypedArray.prototype.slice = function(opt_begin, opt_end) {};
+
+/**
+ * @param {function(this:S, number, number, !TypedArray) : boolean} callback
+ * @param {S=} opt_thisArg
+ * @return {boolean}
+ * @template S
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/some
+ */
+TypedArray.prototype.some = function(callback, opt_thisArg) {};
+
+/**
+ * @param {(function(number, number) : number)=} opt_compareFunction
+ * @return {THIS}
+ * @this {THIS}
+ * @template THIS
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/sort
+ */
+TypedArray.prototype.sort = function(opt_compareFunction) {};
+
+/**
+ * @param {number} begin
+ * @param {number=} opt_end
+ * @return {THIS}
+ * @this {THIS}
+ * @template THIS
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/subarray
+ */
+TypedArray.prototype.subarray = function(begin, opt_end) {};
+
+/**
+ * @return {!IteratorIterable<number>}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/values
+ */
+TypedArray.prototype.values = function() {};
+
+/**
+ * @return {string}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/toLocaleString
+ * @override
+ */
+TypedArray.prototype.toLocaleString = function() {};
+
+/**
+ * @return {string}
+ * @nosideeffects
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/toString
+ * @override
+ */
+TypedArray.prototype.toString = function() {};
+
+/** @override */
+TypedArray.prototype[Symbol.iterator] = function() {};
+
+/**
+ * @param {number|ArrayBufferView|Array<number>|ArrayBuffer|SharedArrayBuffer}
+ *     length or array or buffer
  * @param {number=} opt_byteOffset
  * @param {number=} opt_length
  * @constructor
- * @extends {ArrayBufferView}
- * @implements {ITypedArray}
+ * @extends {TypedArray}
  * @noalias
  * @throws {Error}
  * @modifies {arguments} If the user passes a backing array, then indexed
@@ -411,56 +671,14 @@ Int8Array.from = function(source, opt_mapFn, opt_this) {};
  */
 Int8Array.of = function(var_args) {};
 
-/** @const {number} */
-Int8Array.prototype.BYTES_PER_ELEMENT;
-
-/** @type {number} */
-Int8Array.prototype.length;
 
 /**
- * @param {ArrayBufferView|Array<number>} array
- * @param {number=} opt_offset
- * @override
- * @return {undefined}
- */
-Int8Array.prototype.set = function(array, opt_offset) {};
-
-/**
- * @param {number} begin
- * @param {number=} opt_end
- * @return {!Int8Array}
- * @override
- * @nosideeffects
- */
-Int8Array.prototype.subarray = function(begin, opt_end) {};
-
-/**
- * @param {number} value
- * @param {number=} opt_begin
- * @param {number=} opt_end
- * @return {!Int8Array}
- * @override
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/fill
- */
-Int8Array.prototype.fill = function(value, opt_begin, opt_end) {};
-
-/**
- * @param {number} target
- * @param {number} start
- * @param {number=} opt_end
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/copyWithin
- * @return {Int8Array}
- */
-Int8Array.prototype.copyWithin = function(target, start, opt_end) {};
-
-/**
- * @param {number|ArrayBufferView|Array<number>|ArrayBuffer} length or array
- *     or buffer
+ * @param {number|ArrayBufferView|Array<number>|ArrayBuffer|SharedArrayBuffer}
+ *     length or array or buffer
  * @param {number=} opt_byteOffset
  * @param {number=} opt_length
  * @constructor
- * @extends {ArrayBufferView}
- * @implements {ITypedArray}
+ * @extends {TypedArray}
  * @noalias
  * @throws {Error}
  * @modifies {arguments}
@@ -487,56 +705,14 @@ Uint8Array.from = function(source, opt_mapFn, opt_this) {};
  */
 Uint8Array.of = function(var_args) {};
 
-/** @const {number} */
-Uint8Array.prototype.BYTES_PER_ELEMENT;
-
-/** @type {number} */
-Uint8Array.prototype.length;
 
 /**
- * @param {ArrayBufferView|Array<number>} array
- * @param {number=} opt_offset
- * @override
- * @return {undefined}
- */
-Uint8Array.prototype.set = function(array, opt_offset) {};
-
-/**
- * @param {number} begin
- * @param {number=} opt_end
- * @return {!Uint8Array}
- * @nosideeffects
- * @override
- */
-Uint8Array.prototype.subarray = function(begin, opt_end) {};
-
-/**
- * @param {number} value
- * @param {number=} opt_begin
- * @param {number=} opt_end
- * @return {!Uint8Array}
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/fill
- * @override
- */
-Uint8Array.prototype.fill = function(value, opt_begin, opt_end) {};
-
-/**
- * @param {number} target
- * @param {number} start
- * @param {number=} opt_end
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/copyWithin
- * @return {Uint8Array}
- */
-Uint8Array.prototype.copyWithin = function(target, start, opt_end) {};
-
-/**
- * @param {number|ArrayBufferView|Array<number>|ArrayBuffer} length or array
- *     or buffer
+ * @param {number|ArrayBufferView|Array<number>|ArrayBuffer|SharedArrayBuffer}
+ *     length or array or buffer
  * @param {number=} opt_byteOffset
  * @param {number=} opt_length
  * @constructor
- * @extends {ArrayBufferView}
- * @implements {ITypedArray}
+ * @extends {TypedArray}
  * @noalias
  * @throws {Error}
  * @modifies {arguments}
@@ -563,48 +739,6 @@ Uint8ClampedArray.from = function(source, opt_mapFn, opt_this) {};
  */
 Uint8ClampedArray.of = function(var_args) {};
 
-/** @const {number} */
-Uint8ClampedArray.prototype.BYTES_PER_ELEMENT;
-
-/** @type {number} */
-Uint8ClampedArray.prototype.length;
-
-/**
- * @param {ArrayBufferView|Array<number>} array
- * @param {number=} opt_offset
- * @override
- * @return {undefined}
- */
-Uint8ClampedArray.prototype.set = function(array, opt_offset) {};
-
-/**
- * @param {number} begin
- * @param {number=} opt_end
- * @return {!Uint8ClampedArray}
- * @override
- * @nosideeffects
- */
-Uint8ClampedArray.prototype.subarray = function(begin, opt_end) {};
-
-
-/**
- * @param {number} value
- * @param {number=} opt_begin
- * @param {number=} opt_end
- * @return {!Uint8ClampedArray}
- * @override
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/fill
- */
-Uint8ClampedArray.prototype.fill = function(value, opt_begin, opt_end) {};
-
-/**
- * @param {number} target
- * @param {number} start
- * @param {number=} opt_end
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/copyWithin
- * @return {Uint8ClampedArray}
- */
-Uint8ClampedArray.prototype.copyWithin = function(target, start, opt_end) {};
 
 /**
  * @typedef {Uint8ClampedArray}
@@ -616,13 +750,12 @@ var CanvasPixelArray;
 
 
 /**
- * @param {number|ArrayBufferView|Array<number>|ArrayBuffer} length or array
- *     or buffer
+ * @param {number|ArrayBufferView|Array<number>|ArrayBuffer|SharedArrayBuffer}
+ *     length or array or buffer
  * @param {number=} opt_byteOffset
  * @param {number=} opt_length
  * @constructor
- * @extends {ArrayBufferView}
- * @implements {ITypedArray}
+ * @extends {TypedArray}
  * @noalias
  * @throws {Error}
  * @modifies {arguments}
@@ -649,56 +782,14 @@ Int16Array.from = function(source, opt_mapFn, opt_this) {};
  */
 Int16Array.of = function(var_args) {};
 
-/** @const {number} */
-Int16Array.prototype.BYTES_PER_ELEMENT;
-
-/** @type {number} */
-Int16Array.prototype.length;
 
 /**
- * @param {ArrayBufferView|Array<number>} array
- * @param {number=} opt_offset
- * @override
- * @return {undefined}
- */
-Int16Array.prototype.set = function(array, opt_offset) {};
-
-/**
- * @param {number} begin
- * @param {number=} opt_end
- * @return {!Int16Array}
- * @nosideeffects
- * @override
- */
-Int16Array.prototype.subarray = function(begin, opt_end) {};
-
-/**
- * @param {number} value Int16 value to fill the array.
- * @param {number=} opt_begin
- * @param {number=} opt_end
- * @return {!Int16Array}
- * @override
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/fill
- */
-Int16Array.prototype.fill = function(value, opt_begin, opt_end) {};
-
-/**
- * @param {number} target
- * @param {number} start
- * @param {number=} opt_end
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/copyWithin
- * @return {Int16Array}
- */
-Int16Array.prototype.copyWithin = function(target, start, opt_end) {};
-
-/**
- * @param {number|ArrayBufferView|Array<number>|ArrayBuffer} length or array
- *     or buffer
+ * @param {number|ArrayBufferView|Array<number>|ArrayBuffer|SharedArrayBuffer}
+ *     length or array or buffer
  * @param {number=} opt_byteOffset
  * @param {number=} opt_length
  * @constructor
- * @extends {ArrayBufferView}
- * @implements {ITypedArray}
+ * @extends {TypedArray}
  * @noalias
  * @throws {Error}
  * @modifies {arguments}
@@ -725,56 +816,14 @@ Uint16Array.from = function(source, opt_mapFn, opt_this) {};
  */
 Uint16Array.of = function(var_args) {};
 
-/** @const {number} */
-Uint16Array.prototype.BYTES_PER_ELEMENT;
-
-/** @type {number} */
-Uint16Array.prototype.length;
 
 /**
- * @param {ArrayBufferView|Array<number>} array
- * @param {number=} opt_offset
- * @override
- * @return {undefined}
- */
-Uint16Array.prototype.set = function(array, opt_offset) {};
-
-/**
- * @param {number} begin
- * @param {number=} opt_end
- * @return {!Uint16Array}
- * @override
- * @nosideeffects
- */
-Uint16Array.prototype.subarray = function(begin, opt_end) {};
-
-/**
- * @param {number} value Uint16 value to fill the array.
- * @param {number=} opt_begin
- * @param {number=} opt_end
- * @return {!Uint16Array}
- * @override
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/fill
- */
-Uint16Array.prototype.fill = function(value, opt_begin, opt_end) {};
-
-/**
- * @param {number} target
- * @param {number} start
- * @param {number=} opt_end
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/copyWithin
- * @return {Uint16Array}
- */
-Uint16Array.prototype.copyWithin = function(target, start, opt_end) {};
-
-/**
- * @param {number|ArrayBufferView|Array<number>|ArrayBuffer} length or array
- *     or buffer
+ * @param {number|ArrayBufferView|Array<number>|ArrayBuffer|SharedArrayBuffer}
+ *     length or array or buffer
  * @param {number=} opt_byteOffset
  * @param {number=} opt_length
  * @constructor
- * @extends {ArrayBufferView}
- * @implements {ITypedArray}
+ * @extends {TypedArray}
  * @noalias
  * @throws {Error}
  * @modifies {arguments}
@@ -801,56 +850,14 @@ Int32Array.from = function(source, opt_mapFn, opt_this) {};
  */
 Int32Array.of = function(var_args) {};
 
-/** @const {number} */
-Int32Array.prototype.BYTES_PER_ELEMENT;
-
-/** @type {number} */
-Int32Array.prototype.length;
 
 /**
- * @param {ArrayBufferView|Array<number>} array
- * @param {number=} opt_offset
- * @override
- * @return {undefined}
- */
-Int32Array.prototype.set = function(array, opt_offset) {};
-
-/**
- * @param {number} begin
- * @param {number=} opt_end
- * @return {!Int32Array}
- * @override
- * @nosideeffects
- */
-Int32Array.prototype.subarray = function(begin, opt_end) {};
-
-/**
- * @param {number} value
- * @param {number=} opt_begin
- * @param {number=} opt_end
- * @return {!Int32Array}
- * @override
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/fill
- */
-Int32Array.prototype.fill = function(value, opt_begin, opt_end) {};
-
-/**
- * @param {number} target
- * @param {number} start
- * @param {number=} opt_end
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/copyWithin
- * @return {Int32Array}
- */
-Int32Array.prototype.copyWithin = function(target, start, opt_end) {};
-
-/**
- * @param {number|ArrayBufferView|Array<number>|ArrayBuffer} length or array
- *     or buffer
+ * @param {number|ArrayBufferView|Array<number>|ArrayBuffer|SharedArrayBuffer}
+ *     length or array or buffer
  * @param {number=} opt_byteOffset
  * @param {number=} opt_length
  * @constructor
- * @extends {ArrayBufferView}
- * @implements {ITypedArray}
+ * @extends {TypedArray}
  * @noalias
  * @throws {Error}
  * @modifies {arguments}
@@ -877,56 +884,14 @@ Uint32Array.from = function(source, opt_mapFn, opt_this) {};
  */
 Uint32Array.of = function(var_args) {};
 
-/** @const {number} */
-Uint32Array.prototype.BYTES_PER_ELEMENT;
-
-/** @type {number} */
-Uint32Array.prototype.length;
 
 /**
- * @param {ArrayBufferView|Array<number>} array
- * @param {number=} opt_offset
- * @override
- * @return {undefined}
- */
-Uint32Array.prototype.set = function(array, opt_offset) {};
-
-/**
- * @param {number} begin
- * @param {number=} opt_end
- * @return {!Uint32Array}
- * @override
- * @nosideeffects
- */
-Uint32Array.prototype.subarray = function(begin, opt_end) {};
-
-/**
- * @param {number} value
- * @param {number=} opt_begin
- * @param {number=} opt_end
- * @return {!Uint32Array}
- * @override
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/fill
- */
-Uint32Array.prototype.fill = function(value, opt_begin, opt_end) {};
-
-/**
- * @param {number} target
- * @param {number} start
- * @param {number=} opt_end
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/copyWithin
- * @return {Uint32Array}
- */
-Uint32Array.prototype.copyWithin = function(target, start, opt_end) {};
-
-/**
- * @param {number|ArrayBufferView|Array<number>|ArrayBuffer} length or array
- *     or buffer
+ * @param {number|ArrayBufferView|Array<number>|ArrayBuffer|SharedArrayBuffer}
+ *     length or array or buffer
  * @param {number=} opt_byteOffset
  * @param {number=} opt_length
  * @constructor
- * @extends {ArrayBufferView}
- * @implements {ITypedArray}
+ * @extends {TypedArray}
  * @noalias
  * @throws {Error}
  * @modifies {arguments}
@@ -953,56 +918,14 @@ Float32Array.from = function(source, opt_mapFn, opt_this) {};
  */
 Float32Array.of = function(var_args) {};
 
-/** @const {number} */
-Float32Array.prototype.BYTES_PER_ELEMENT;
-
-/** @type {number} */
-Float32Array.prototype.length;
 
 /**
- * @param {ArrayBufferView|Array<number>} array
- * @param {number=} opt_offset
- * @override
- * @return {undefined}
- */
-Float32Array.prototype.set = function(array, opt_offset) {};
-
-/**
- * @param {number} begin
- * @param {number=} opt_end
- * @return {!Float32Array}
- * @override
- * @nosideeffects
- */
-Float32Array.prototype.subarray = function(begin, opt_end) {};
-
-/**
- * @param {number} value
- * @param {number=} opt_begin
- * @param {number=} opt_end
- * @return {!Float32Array}
- * @override
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/fill
- */
-Float32Array.prototype.fill = function(value, opt_begin, opt_end) {};
-
-/**
- * @param {number} target
- * @param {number} start
- * @param {number=} opt_end
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/copyWithin
- * @return {Float32Array}
- */
-Float32Array.prototype.copyWithin = function(target, start, opt_end) {};
-
-/**
- * @param {number|ArrayBufferView|Array<number>|ArrayBuffer} length or array
- *     or buffer
+ * @param {number|ArrayBufferView|Array<number>|ArrayBuffer|SharedArrayBuffer}
+ *     length or array or buffer
  * @param {number=} opt_byteOffset
  * @param {number=} opt_length
  * @constructor
- * @extends {ArrayBufferView}
- * @implements {ITypedArray}
+ * @extends {TypedArray}
  * @noalias
  * @throws {Error}
  * @modifies {arguments}
@@ -1029,50 +952,9 @@ Float64Array.from = function(source, opt_mapFn, opt_this) {};
  */
 Float64Array.of = function(var_args) {};
 
-/** @const {number} */
-Float64Array.prototype.BYTES_PER_ELEMENT;
-
-/** @type {number} */
-Float64Array.prototype.length;
 
 /**
- * @param {ArrayBufferView|Array<number>} array
- * @param {number=} opt_offset
- * @override
- * @return {undefined}
- */
-Float64Array.prototype.set = function(array, opt_offset) {};
-
-/**
- * @param {number} begin
- * @param {number=} opt_end
- * @return {!Float64Array}
- * @override
- * @nosideeffects
- */
-Float64Array.prototype.subarray = function(begin, opt_end) {};
-
-/**
- * @param {number} value
- * @param {number=} opt_begin
- * @param {number=} opt_end
- * @return {!Float64Array}
- * @override
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/fill
- */
-Float64Array.prototype.fill = function(value, opt_begin, opt_end) {};
-
-/**
- * @param {number} target
- * @param {number} start
- * @param {number=} opt_end
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/copyWithin
- * @return {Float64Array}
- */
-Float64Array.prototype.copyWithin = function(target, start, opt_end) {};
-
-/**
- * @param {ArrayBuffer} buffer
+ * @param {ArrayBuffer|SharedArrayBuffer} buffer
  * @param {number=} opt_byteOffset
  * @param {number=} opt_byteLength
  * @constructor
@@ -1388,32 +1270,32 @@ Array.prototype.entries;
 
 
 /**
- * @param {!function(this:S, T, number, !Array<T>): boolean} predicate
+ * @param {!function(this:S, T, number, !Array<T>): boolean} predicateFn
  * @param {S=} opt_this
  * @return {T|undefined}
  * @this {IArrayLike<T>|string}
  * @template T,S
  * @see http://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.find
  */
-Array.prototype.find = function(predicate, opt_this) {};
+Array.prototype.find = function(predicateFn, opt_this) {};
 
 
 /**
- * @param {!function(this:S, T, number, !Array<T>): boolean} predicate
+ * @param {!function(this:S, T, number, !Array<T>): boolean} predicateFn
  * @param {S=} opt_this
  * @return {number}
  * @this {IArrayLike<T>|string}
  * @template T,S
  * @see http://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.findindex
  */
-Array.prototype.findIndex = function(predicate, opt_this) {};
+Array.prototype.findIndex = function(predicateFn, opt_this) {};
 
 
 /**
  * @param {T} value
  * @param {number=} opt_begin
  * @param {number=} opt_end
- * @return {!IArrayLike<T>}
+ * @return {!Array<T>}
  * @this {!IArrayLike<T>|string}
  * @template T
  * @see http://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.fill
@@ -1427,12 +1309,13 @@ Array.prototype.fill = function(value, opt_begin, opt_end) {};
  * @param {number=} opt_end
  * @see http://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.copywithin
  * @template T
- * @return {!IArrayLike<T>}
+ * @return {!Array<T>}
  */
 Array.prototype.copyWithin = function(target, start, opt_end) {};
 
 
 /**
+ * NOTE: this is an ES2016 (ES7) extern.
  * @param {T} searchElement
  * @param {number=} opt_fromIndex
  * @return {boolean}
@@ -1545,6 +1428,7 @@ Object.assign = function(target, var_args) {};
 
 /**
  * TODO(dbeam): find a better place for ES2017 externs like this one.
+ * NOTE: this is an ES2017 (ES8) extern.
  * @param {!Object<T>} obj
  * @return {!Array<T>} values
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values
@@ -1552,6 +1436,26 @@ Object.assign = function(target, var_args) {};
  * @template T
  */
 Object.values = function(obj) {};
+
+/**
+ * NOTE: this is an ES2017 (ES8) extern.
+ * @param {!Object<T>} obj
+ * @return {!Array<!Array<(string|T)>>} entries
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
+ * @throws {Error}
+ * @template T
+ */
+Object.entries = function(obj) {};
+
+/**
+ * NOTE: this is an ES2017 (ES8) extern.
+ * @param {!Object} obj
+ * @return {!Object<!ObjectPropertyDescriptor>} descriptors
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors
+ * @throws {Error}
+ * @template T
+ */
+Object.getOwnPropertyDescriptors = function(obj) {};
 
 
 
@@ -1562,29 +1466,29 @@ Object.values = function(obj) {};
 var Reflect = {};
 
 /**
- * @param {function(this: THIS, ...?): RESULT} target
+ * @param {function(this: THIS, ...?): RESULT} targetFn
  * @param {THIS} thisArg
- * @param {!Array} argList
+ * @param {!Array<?>} argList
  * @return {RESULT}
  * @template THIS, RESULT
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/apply
  */
-Reflect.apply = function(target, thisArg, argList) {};
+Reflect.apply = function(targetFn, thisArg, argList) {};
 
 /**
- * @param {function(new: ?, ...?)} target
- * @param {!Array} argList
- * @param {function(new: TARGET, ...?)=} opt_newTarget
+ * @param {function(new: ?, ...?)} targetConstructorFn
+ * @param {!Array<?>} argList
+ * @param {function(new: TARGET, ...?)=} opt_newTargetConstructorFn
  * @return {TARGET}
  * @template TARGET
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/construct
  */
-Reflect.construct = function(target, argList, opt_newTarget) {};
+Reflect.construct = function(targetConstructorFn, argList, opt_newTargetConstructorFn) {};
 
 /**
  * @param {!Object} target
  * @param {string} propertyKey
- * @param {!Object} attributes
+ * @param {!ObjectPropertyDescriptor} attributes
  * @return {boolean}
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/defineProperty
  */
@@ -1674,3 +1578,106 @@ Reflect.set = function(target, propertyKey, value, opt_receiver) {};
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/setPrototypeOf
  */
 Reflect.setPrototypeOf = function(target, proto) {};
+
+
+/**
+ * @const
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Atomics
+ */
+var Atomics = {};
+
+/**
+ * @param {!TypedArray} typedArray
+ * @param {number} index
+ * @param {number} value
+ * @return {number}
+ */
+Atomics.add = function(typedArray, index, value) {}
+
+/**
+ * @param {!TypedArray} typedArray
+ * @param {number} index
+ * @param {number} value
+ * @return {number}
+ */
+Atomics.and = function(typedArray, index, value) {}
+
+/**
+ * @param {!TypedArray} typedArray
+ * @param {number} index
+ * @param {number} expectedValue
+ * @param {number} replacementValue
+ * @return {number}
+ */
+Atomics.compareExchange = function(typedArray, index, expectedValue,
+    replacementValue) {}
+
+/**
+ * @param {!TypedArray} typedArray
+ * @param {number} index
+ * @param {number} value
+ * @return {number}
+ */
+Atomics.exchange = function(typedArray, index, value) {}
+
+/**
+ * @param {number} size
+ * @return {boolean}
+ */
+Atomics.isLockFree = function(size) {}
+
+/**
+ * @param {!TypedArray} typedArray
+ * @param {number} index
+ * @return {number}
+ */
+Atomics.load = function(typedArray, index) {}
+
+/**
+ * @param {!TypedArray} typedArray
+ * @param {number} index
+ * @param {number} value
+ * @return {number}
+ */
+Atomics.or = function(typedArray, index, value) {}
+
+/**
+ * @param {!TypedArray} typedArray
+ * @param {number} index
+ * @param {number} value
+ * @return {number}
+ */
+Atomics.store = function(typedArray, index, value) {}
+
+/**
+ * @param {!TypedArray} typedArray
+ * @param {number} index
+ * @param {number} value
+ * @return {number}
+ */
+Atomics.sub = function(typedArray, index, value) {}
+
+/**
+ * @param {!Int32Array} typedArray
+ * @param {number} index
+ * @param {number} value
+ * @param {number=} timeout
+ * @return {String}
+ */
+Atomics.wait = function(typedArray, index, value, timeout) {}
+
+/**
+ * @param {!Int32Array} typedArray
+ * @param {number} index
+ * @param {number} count
+ * @return {number}
+ */
+Atomics.wake = function(typedArray, index, count) {}
+
+/**
+ * @param {!TypedArray} typedArray
+ * @param {number} index
+ * @param {number} value
+ * @return {number}
+ */
+Atomics.xor = function(typedArray, index, value) {}

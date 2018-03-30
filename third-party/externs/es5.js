@@ -66,13 +66,12 @@ String.prototype.trimRight = function() {};
  * A object property descriptor used by Object.create, Object.defineProperty,
  * Object.defineProperties, Object.getOwnPropertyDescriptor.
  *
- * Note: not a real constructor.
- * @constructor
+ * @record
  * @template THIS
  */
 function ObjectPropertyDescriptor() {}
 
-/** @type {*} */
+/** @type {(*|undefined)} */
 ObjectPropertyDescriptor.prototype.value;
 
 /** @type {(function(this: THIS):?)|undefined} */
@@ -92,8 +91,8 @@ ObjectPropertyDescriptor.prototype.configurable;
 
 
 /**
- * @param {Object} proto
- * @param {Object=} opt_properties  A map of ObjectPropertyDescriptors.
+ * @param {?Object} proto
+ * @param {?Object=} opt_properties  A map of ObjectPropertyDescriptors.
  * @return {!Object}
  * @nosideeffects
  * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/create
@@ -121,10 +120,11 @@ Object.defineProperties = function(obj, props) {};
 
 
 /**
- * @param {!Object} obj
+ * @param {T} obj
  * @param {string} prop
- * @return {!ObjectPropertyDescriptor|undefined}
+ * @return {!ObjectPropertyDescriptor<T>|undefined}
  * @nosideeffects
+ * @template T
  * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor
  */
 Object.getOwnPropertyDescriptor = function(obj, prop) {};

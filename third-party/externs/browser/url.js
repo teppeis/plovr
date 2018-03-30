@@ -24,6 +24,7 @@
 
 /**
  * @constructor
+ * @implements {Iterable<!Array<string>>}
  * @param {(string|!URLSearchParams)=} init
  */
 function URLSearchParams(init) {}
@@ -70,7 +71,7 @@ URLSearchParams.prototype.set = function(name, value) {};
  * @see https://url.spec.whatwg.org
  * @constructor
  * @param {string} url
- * @param {string=} base
+ * @param {(string|!URL)=} base
  */
 function URL(url, base) {}
 
@@ -109,7 +110,7 @@ URL.prototype.search;
 
 /**
  * @const
- * @type {URLSearchParams}
+ * @type {!URLSearchParams}
  */
 URL.prototype.searchParams;
 
