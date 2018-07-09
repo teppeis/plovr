@@ -29,6 +29,11 @@
             <version>2018-03-14</version>
         </dependency>
         <dependency>
+            <groupId>com.google.common.html.types</groupId>
+            <artifactId>types</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.javascript</groupId>
             <artifactId>closure-compiler</artifactId>
             <version>v20180610</version>

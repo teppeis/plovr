@@ -15,11 +15,6 @@ java_library(
     ':aopalliance-aopalliance-jar',
     ':com.google.inject.extensions-guice-multibindings-jar',
     ':com.google.guava-guava-jar',
-    ':com.google.common.html.types-types-jar',
-    ':com.google.gwt-gwt-user-jar',
-    ':javax.validation-validation-api-jar',
-    ':javax.validation-validation-api-sources',
-    ':javax.annotation-jsr250-api-jar',
     ':com.google.protobuf-protobuf-java-jar',
     ':org.ow2.asm-asm-jar',
     ':org.ow2.asm-asm-commons-jar',
@@ -28,10 +23,12 @@ java_library(
     ':org.ow2.asm-asm-analysis-jar',
     ':com.ibm.icu-icu4j-jar',
     ':org.json-json-jar',
+    ':com.google.common.html.types-types-jar',
+    ':com.google.jsinterop-jsinterop-annotations-jar',
+    ':javax.annotation-jsr250-api-jar',
+    ':com.google.errorprone-error_prone_annotations-jar',
     ':com.google.javascript-closure-compiler-jar',
     ':com.google.javascript-closure-compiler-externs-jar',
-    ':com.google.errorprone-error_prone_annotations-jar',
-    ':com.google.jsinterop-jsinterop-annotations-jar',
     ':org.seleniumhq.selenium-selenium-java-jar',
     ':org.seleniumhq.selenium-selenium-android-driver-jar',
     ':org.seleniumhq.selenium-selenium-remote-driver-jar',
@@ -182,9 +179,9 @@ prebuilt_jar(
 
 remote_file(
   name = 'remote-com.google.common.html.types-types-jar',
-  out = 'com.google.common.html.types-types-jar-1.0.4.jar',
-  url = 'mvn:com.google.common.html.types:types:jar:1.0.4',
-  sha1 = '2adf4c8bfccc0ff7346f9186ac5aa57d829ad065',
+  out = 'com.google.common.html.types-types-jar-1.0.6.jar',
+  url = 'mvn:com.google.common.html.types:types:jar:1.0.6',
+  sha1 = '782c9bb80f7c6711625124b43512f8b3b00ce58d',
 )
 
 prebuilt_jar(
@@ -194,9 +191,9 @@ prebuilt_jar(
 
 remote_file(
   name = 'remote-com.google.errorprone-error_prone_annotations-jar',
-  out = 'com.google.errorprone-error_prone_annotations-jar-2.0.18.jar',
-  url = 'mvn:com.google.errorprone:error_prone_annotations:jar:2.0.18',
-  sha1 = '5f65affce1684999e2f4024983835efc3504012e',
+  out = 'com.google.errorprone-error_prone_annotations-jar-2.0.2.jar',
+  url = 'mvn:com.google.errorprone:error_prone_annotations:jar:2.0.2',
+  sha1 = '8382c6cdc18c8c8ad7840024fa340509cf16be11',
 )
 
 prebuilt_jar(
@@ -209,18 +206,6 @@ remote_file(
   out = 'com.google.guava-guava-jar-21.0.jar',
   url = 'mvn:com.google.guava:guava:jar:21.0',
   sha1 = '3a3d111be1be1b745edfa7d91678a12d7ed38709',
-)
-
-prebuilt_jar(
-  name = 'com.google.gwt-gwt-user-jar',
-  binary_jar = ':remote-com.google.gwt-gwt-user-jar',
-)
-
-remote_file(
-  name = 'remote-com.google.gwt-gwt-user-jar',
-  out = 'com.google.gwt-gwt-user-jar-2.8.0-beta1.jar',
-  url = 'mvn:com.google.gwt:gwt-user:jar:2.8.0-beta1',
-  sha1 = 'abea2e34826ce592e0d2bd49a844b2ff57b78134',
 )
 
 prebuilt_jar(
@@ -278,9 +263,9 @@ prebuilt_jar(
 
 remote_file(
   name = 'remote-com.google.jsinterop-jsinterop-annotations-jar',
-  out = 'com.google.jsinterop-jsinterop-annotations-jar-1.0.0.jar',
-  url = 'mvn:com.google.jsinterop:jsinterop-annotations:jar:1.0.0',
-  sha1 = '23c3a3c060ffe4817e67673cc8294e154b0a4a95',
+  out = 'com.google.jsinterop-jsinterop-annotations-jar-1.0.1.jar',
+  url = 'mvn:com.google.jsinterop:jsinterop-annotations:jar:1.0.1',
+  sha1 = 'e9135c43d12b30a6d02706e97ce256a90d68dc9d',
 )
 
 prebuilt_jar(
@@ -401,30 +386,6 @@ remote_file(
   out = 'javax.inject-javax.inject-jar-1.jar',
   url = 'mvn:javax.inject:javax.inject:jar:1',
   sha1 = '6975da39a7040257bd51d21a231b76c915872d38',
-)
-
-prebuilt_jar(
-  name = 'javax.validation-validation-api-sources',
-  binary_jar = ':remote-javax.validation-validation-api-sources',
-)
-
-remote_file(
-  name = 'remote-javax.validation-validation-api-sources',
-  out = 'javax.validation-validation-api-sources-1.0.0.GA.jar',
-  url = 'mvn:javax.validation:validation-api:sources:1.0.0.GA',
-  sha1 = '7a561191db2203550fbfa40d534d4997624cd369',
-)
-
-prebuilt_jar(
-  name = 'javax.validation-validation-api-jar',
-  binary_jar = ':remote-javax.validation-validation-api-jar',
-)
-
-remote_file(
-  name = 'remote-javax.validation-validation-api-jar',
-  out = 'javax.validation-validation-api-jar-1.0.0.GA.jar',
-  url = 'mvn:javax.validation:validation-api:jar:1.0.0.GA',
-  sha1 = 'b6bd7f9d78f6fdaa3c37dae18a4bd298915f328e',
 )
 
 prebuilt_jar(
